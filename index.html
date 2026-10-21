@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Make your next desk break an adventure. Move to power a pixel-art runner, with adjustable effort and short exercise sessions.">
+  <title>Questathon | Code A Difference</title>
+  <link rel="icon" type="image/webp" href="assets/site/code-a-difference.webp">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/reading.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the game</a>
+  <header class="site-header" id="top">
+    <a class="site-brand" href="https://codeadifference.ct.ws/"><img src="assets/site/code-a-difference.webp" alt="" width="38" height="38"><span>Code A Difference</span></a>
+    <nav class="site-nav" aria-label="Primary">
+      <a href="https://codeadifference.ct.ws/#work">Tools</a>
+      <a href="https://codeadifference.ct.ws/about/">About us</a>
+      <a href="https://codeadifference.ct.ws/#how">How to run it</a>
+      <a href="https://codeadifference.ct.ws/#feedback">Feedback</a>
+    </nav>
+    <details class="reading-options" id="reading-options">
+      <summary><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="7" r="1"/><path d="M7 10h10m-5 0v5m0-1-3 4m3-4 3 4"/></svg>Reading options</summary>
+      <div class="reading-panel"><h2>Reading options</h2><label for="reading-size">Text size</label><select id="reading-size"><option value="1">Standard</option><option value="1.15">Larger</option><option value="1.3">Largest</option></select><label for="reading-theme">Colour theme</label><select id="reading-theme"><option value="light">Light</option><option value="dark">Dark</option><option value="contrast">High contrast</option></select><label class="reading-motion"><input type="checkbox" id="reading-motion">Reduce game animation</label><button type="button" id="reading-reset">Reset reading options</button></div>
+    </details>
+  </header>
+  <main id="main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="https://codeadifference.ct.ws/">Home</a></li><li><a href="https://codeadifference.ct.ws/#work">Tools</a></li><li aria-current="page">Questathon</li></ol></nav>
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Questathon</h1>
+      <p class="project-description">A game for taking a movement break. Move in front of your webcam to keep the runner ahead of the creature, at a pace that works for you.</p>
+      <div class="project-meta"><span><span class="project-dot" aria-hidden="true"></span>Runs in your browser · movement breaks</span><a href="#how-to-play">How to play</a></div>
+    </section>
+
+    <div class="play-layout">
+      <section class="game-panel" aria-label="Questathon runner">
+        <div class="stage" id="stage">
+          <canvas id="game-canvas" width="960" height="540" aria-label="Pixel city chase. Move to run faster and stay ahead of the creature. Session statistics are available below."></canvas>
+          <div class="scene-hud"><span class="scene-name">Questathon <span id="mode-badge">Ready to play</span></span><span class="timer" id="timer" aria-label="Time remaining">2:00</span></div>
+          <div class="stage-message" id="stage-message"><span class="message-mark" aria-hidden="true">II</span><h2 id="message-title">Ready to play?</h2><p id="message-copy">Choose your break settings, then start the camera.<br>You can also try the demo without a camera.</p></div>
+          <div class="scene-caption" id="scene-caption">Movement builds energy. Energy keeps you running.</div>
+        </div>
+        <div class="game-toolbar"><span id="game-hint">Move to run. Pause whenever you need.</span><div class="toolbar-actions"><button id="pause" class="button-small" disabled>Pause</button><button id="end" class="button-small" disabled>Finish</button></div></div>
+        <div class="stats" aria-label="Session statistics">
+          <div class="energy-stat"><div class="stat-label"><span>Movement energy</span><strong id="energy-value">0%</strong></div><div class="meter" role="progressbar" aria-label="Movement energy" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="energy-meter"><div id="energy-fill"></div></div><span class="stat-note" id="energy-note">Move to fill your meter</span></div>
+          <div><span class="stat-label">Distance</span><strong class="stat-value"><span id="distance">0</span><small> m</small></strong></div>
+          <div><span class="stat-label">Active time</span><strong class="stat-value" id="active-time">0:00</strong></div>
+          <div><span class="stat-label">Best run <small id="best-mode">camera</small></span><strong class="stat-value"><span id="best-distance">0</span><small> m</small></strong></div>
+        </div>
+        <div class="demo-controls" id="demo-controls" hidden><button id="demo-move">Hold to move <span aria-hidden="true">→</span></button><p>Or hold <kbd>Space</kbd> on your keyboard. Demo mode does not track exercise.</p></div>
+      </section>
+
+      <aside class="setup-panel" aria-labelledby="setup-title">
+        <div class="setup-heading"><h2 id="setup-title">Your break</h2></div>
+        <form id="setup-form">
+          <fieldset id="settings">
+            <div class="field-group"><label for="duration">Break length</label><select id="duration"><option value="60">1 minute</option><option value="120" selected>2 minutes</option><option value="300">5 minutes</option><option value="0">Endless</option></select></div>
+            <fieldset class="field-group"><legend>Your movement</legend><div class="segmented"><label><input type="radio" name="movement" value="standing" checked><span>Standing</span></label><label><input type="radio" name="movement" value="seated"><span>Seated</span></label></div><p class="field-help" id="movement-help">March, step side to side, or move your arms.</p></fieldset>
+            <fieldset class="field-group difficulty-group"><legend>How much effort?</legend><div class="difficulty-options"><label><input type="radio" name="difficulty" value="gentle" checked><span>Gentle</span></label><label><input type="radio" name="difficulty" value="moderate"><span>Moderate</span></label><label><input type="radio" name="difficulty" value="active"><span>Active</span></label><label><input type="radio" name="difficulty" value="custom"><span>Custom</span></label></div><p class="field-help" id="difficulty-help">Less movement needed to maintain speed.</p></fieldset>
+            <div class="field-group" id="sensitivity-group" hidden><label for="sensitivity">Movement sensitivity <output id="sensitivity-value" for="sensitivity">1.0×</output></label><input id="sensitivity" type="range" min="0.5" max="2" step="0.1" value="1"><p class="field-help">Higher sensitivity means less movement is needed.</p></div>
+            <button class="start-button" type="submit" id="start-camera"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 10 7-10 7z"/></svg>Start with camera</button>
+            <button class="demo-button" type="button" id="start-demo">Try the keyboard demo</button>
+          </fieldset>
+        </form>
+        <p id="status" role="status" aria-live="polite">No camera access until you press Start.</p>
+        <div class="camera-panel" id="camera-panel" hidden><div class="video-wrap"><video id="webcam" autoplay playsinline muted aria-label="Mirrored camera preview"></video><canvas id="pose-overlay" width="320" height="240" aria-hidden="true"></canvas></div><div class="camera-caption"><span class="live-dot"></span><span id="camera-status">Finding your movement…</span></div></div>
+        <div class="privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg><p><strong>Camera stays on your device.</strong> Video is processed here, never recorded or uploaded.</p></div>
+      </aside>
+    </div>
+
+    <section id="how-to-play" class="how-to-play" aria-labelledby="how-title"><div class="how-intro"><h2 id="how-title">How to play</h2><p>Use your camera for movement controls, or explore with the keyboard demo.</p></div><ol><li><span class="instruction-number">1</span><div><h3>Choose your settings</h3><p>Pick a break length, seated or standing movement, and an effort level. Gentle needs less movement to run.</p></div></li><li><span class="instruction-number">2</span><div><h3>Set up your camera</h3><p>Allow camera access, then move comfortably for a short calibration. Keep your shoulders, elbows and wrists in view.</p></div></li><li><span class="instruction-number">3</span><div><h3>Move to keep running</h3><p>Your movement fills the energy meter and keeps the creature behind you. Pause or finish at any time.</p></div></li></ol></section>
+  </main>
+  <footer class="site-footer"><div class="footer-inner"><div class="footer-identity"><a class="site-brand" href="https://codeadifference.ct.ws/"><img src="assets/site/code-a-difference.webp" alt="" width="38" height="38"><span>Code A Difference</span></a><p>Code A Difference: built by students.</p></div><nav aria-label="Footer"><a href="https://codeadifference.ct.ws/#work">All tools</a><a href="https://codeadifference.ct.ws/about/">About us</a><a href="https://codeadifference.ct.ws/#feedback">Feedback</a></nav><a href="#top">Back to the top ↑</a></div></footer>
+  <noscript><p class="noscript">Questathon needs JavaScript to run. Please enable it and reload this page.</p></noscript>
+</body>
+</html>
